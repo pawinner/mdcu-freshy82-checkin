@@ -5,7 +5,7 @@
     <base target="_top">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MDCU Check-in - ระบบเช็คชื่อน้อง</title>
+    <title>MDCU Night Check-in</title>
 
     <!-- SEO Meta Tags -->
     <meta name="google-site-verification" content="LVo329QlgQQisNaJ7dDJGmEch0tas8Ljt8tmablNOfM" />
@@ -20,18 +20,18 @@
     <!-- Open Graph / Facebook / Line -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://mdcunight2026.vercel.app/">
-    <meta property="og:title" content="MDCU Check-in - ระบบเช็คอินกิจกรรม">
+    <meta property="og:title" content="MDCU Night Check-in">
     <meta property="og:description"
-        content="ระบบเช็คอินกิจกรรม MDCU (MDCU Night System) รองรับการสแกน QR Code และกรอกรหัสสำหรับเช็คอินอย่างรวดเร็ว">
+        content="ระบบเช็คอินงาน MDCU Night ซึ่งรองรับทั้งการสแกน QR Code และกรอกรหัส">
     <!-- ใส่ URL รูปภาพพรีวิวเว็บตรงนี้ (ขนาดแนะนำ 1200x630px) -->
     <!-- <meta property="og:image" content="https://mdcunight2026.vercel.app/preview-image.jpg"> -->
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://mdcunight2026.vercel.app/">
-    <meta property="twitter:title" content="MDCU Check-in - ระบบเช็คอินกิจกรรม">
+    <meta property="twitter:title" content="MDCU Night Check-in">
     <meta property="twitter:description"
-        content="ระบบเช็คอินกิจกรรม MDCU (MDCU Night System) รองรับการสแกน QR Code และกรอกรหัสสำหรับเช็คอินอย่างรวดเร็ว">
+        content="ระบบเช็คอินงาน MDCU Night ซึ่งรองรับทั้งการสแกน QR Code และกรอกรหัส">
     <!-- <meta property="twitter:image" content="https://mdcunight2026.vercel.app/preview-image.jpg"> -->
 
     <!-- Tailwind CSS -->
@@ -183,7 +183,7 @@
         <!-- Header Section -->
         <header class="w-full flex justify-between items-center py-2 px-2">
             <div>
-                <h1 class="text-2xl font-bold tracking-tight text-gray-900">Check-in</h1>
+                <h1 class="text-2xl font-bold tracking-tight text-gray-900">ระบบเช็คชื่อน้อง</h1>
                 <p class="text-sm font-medium text-gray-500">MDCU Night System</p>
             </div>
             <div class="flex gap-2">
@@ -242,21 +242,25 @@
         <!-- Main Action Card -->
         <div class="glass-card w-full flex-grow flex flex-col overflow-hidden">
 
-            <!-- Custom Tabs -->
+            <!-- Custom Tabs (Updated for 3 Tabs) -->
             <div class="p-2 border-b border-gray-100">
                 <div class="flex bg-gray-50 p-1 rounded-xl">
                     <button id="modeScanBtn" onclick="APP.switchMode('scan')"
-                        class="flex-1 py-2.5 text-sm font-semibold rounded-lg bg-white text-gray-900 shadow-sm transition-all duration-200">
+                        class="flex-1 py-2 text-sm font-semibold rounded-lg bg-white text-gray-900 shadow-sm transition-all duration-200">
                         สแกน QR
                     </button>
                     <button id="modeManualBtn" onclick="APP.switchMode('manual')"
-                        class="flex-1 py-2.5 text-sm font-semibold rounded-lg text-gray-500 hover:text-gray-900 transition-all duration-200">
+                        class="flex-1 py-2 text-sm font-semibold rounded-lg text-gray-500 hover:text-gray-900 transition-all duration-200">
                         กรอกรหัส
+                    </button>
+                    <button id="modeDashBtn" onclick="APP.switchMode('dashboard')"
+                        class="flex-1 py-2 text-sm font-semibold rounded-lg text-gray-500 hover:text-gray-900 transition-all duration-200">
+                        สรุปยอด
                     </button>
                 </div>
             </div>
 
-            <!-- Scanner Mode -->
+            <!-- 1. Scanner Mode -->
             <div id="scanWrapper" class="p-5 flex flex-col items-center flex-grow justify-center w-full">
 
                 <div id="reader-container" class="shadow-inner">
@@ -318,7 +322,7 @@
                 </div>
             </div>
 
-            <!-- Manual Mode -->
+            <!-- 2. Manual Mode -->
             <div id="manualWrapper" class="hidden p-6 flex flex-col items-center flex-grow justify-center w-full">
                 <div class="w-full max-w-[280px] space-y-8">
                     <div class="text-center">
@@ -338,6 +342,73 @@
                     </button>
                 </div>
             </div>
+
+            <!-- 3. Dashboard Mode (สรุปยอด) -->
+            <div id="dashWrapper" class="hidden p-5 flex flex-col flex-grow w-full">
+                <div class="flex flex-col gap-3 mb-5">
+                    <div class="flex gap-2">
+                        <!-- Dropdown: เลือกรอบ -->
+                        <div class="relative flex-1">
+                            <select id="dashRoundSelect"
+                                class="w-full appearance-none bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-sm font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all">
+                                <option value="" disabled selected hidden>กรุณาเลือกรอบ</option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Dropdown: เลือกบ้าน -->
+                        <div class="relative flex-1">
+                            <select id="dashBaanSelect"
+                                class="w-full appearance-none bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-sm font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all">
+                                <option value="" disabled selected hidden>กรุณาเลือกรอบ</option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="APP.loadDashboard()" class="w-full bg-gray-900 text-white px-5 py-3 rounded-xl text-sm font-bold active:scale-95 transition-all">ค้นหาข้อมูล</button>
+                </div>
+
+                <!-- Stats -->
+                <div class="grid grid-cols-3 gap-3 mb-5">
+                    <div class="bg-gray-50 rounded-2xl p-3 text-center border border-gray-100 shadow-sm">
+                        <div class="text-[10px] font-bold text-gray-400 mb-1 uppercase tracking-wider">ทั้งหมด</div>
+                        <div id="statTotal" class="text-2xl font-black text-gray-900">-</div>
+                    </div>
+                    <div class="bg-green-50 rounded-2xl p-3 text-center border border-green-100 shadow-sm">
+                        <div class="text-[10px] font-bold text-green-600 mb-1 uppercase tracking-wider">เช็คอินแล้ว</div>
+                        <div id="statIn" class="text-2xl font-black text-green-700">-</div>
+                    </div>
+                    <div class="bg-red-50 rounded-2xl p-3 text-center border border-red-100 shadow-sm">
+                        <div class="text-[10px] font-bold text-red-500 mb-1 uppercase tracking-wider">ยังไม่มา</div>
+                        <div id="statMiss" class="text-2xl font-black text-red-600">-</div>
+                    </div>
+                </div>
+
+                <!-- Lists -->
+                <div class="flex-grow overflow-hidden flex flex-col bg-gray-50 rounded-2xl border border-gray-100 p-2">
+                    <div class="flex gap-1 mb-3 bg-gray-200/50 p-1 rounded-xl">
+                        <button onclick="APP.toggleDashTab('missing')" id="tabMissing" class="flex-1 text-xs font-bold py-2 rounded-lg bg-white text-red-600 shadow-sm transition-all">ยังไม่มา</button>
+                        <button onclick="APP.toggleDashTab('present')" id="tabPresent" class="flex-1 text-xs font-bold py-2 rounded-lg text-gray-500 hover:text-gray-700 transition-all">เช็คอินแล้ว</button>
+                    </div>
+                    
+                    <!-- Missing List -->
+                    <div id="listMissing" class="flex-grow overflow-y-auto space-y-2 pb-2 px-1">
+                        <div class="text-center text-sm text-gray-400 py-8">กรุณาเลือกบ้านและกดค้นหา...</div>
+                    </div>
+
+                    <!-- Present List -->
+                    <div id="listPresent" class="hidden flex-grow overflow-y-auto space-y-2 pb-2 px-1"></div>
+                </div>
+            </div>
+
         </div>
 
     </div>
@@ -403,15 +474,19 @@
         // ==========================================
         // 1. นำ URL จาก Google Apps Script (Deploy > Web App) มาวางที่นี่
         // ==========================================
-        const GOOGLE_APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyF31drI4r53aALyKrGKdY348wiZLtdpKOJyUXMUGLNEyB6ys_gSSMLCfdsW-NtZsGV/exec";
+        const GOOGLE_APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx8OByAnuiNazDs0OHIrtnv1O-17vqkfE4bITFix_cEWpHH1NTv-PXKXurWkB_YiEeZ/exec";
 
         const DOM = {
             roundSelect: document.getElementById('roundSelect'),
             placeSelect: document.getElementById('placeSelect'),
+            dashBaanSelect: document.getElementById('dashBaanSelect'),
+            dashRoundSelect: document.getElementById('dashRoundSelect'),
             scanWrapper: document.getElementById('scanWrapper'),
             manualWrapper: document.getElementById('manualWrapper'),
+            dashWrapper: document.getElementById('dashWrapper'),
             modeScanBtn: document.getElementById('modeScanBtn'),
             modeManualBtn: document.getElementById('modeManualBtn'),
+            modeDashBtn: document.getElementById('modeDashBtn'),
             manualIdInput: document.getElementById('manualIdInput'),
             cameraOverlay: document.getElementById('camera-overlay'),
             scanFrame: document.getElementById('scan-frame'),
@@ -433,7 +508,15 @@
             modalUserPlace: document.getElementById('modalUserPlace'),
             modalConfirmActions: document.getElementById('modalConfirmActions'),
             modalCloseActions: document.getElementById('modalCloseActions'),
-            btnCloseModal: document.getElementById('btnCloseModal')
+            btnCloseModal: document.getElementById('btnCloseModal'),
+            // Dashboard UI
+            statTotal: document.getElementById('statTotal'),
+            statIn: document.getElementById('statIn'),
+            statMiss: document.getElementById('statMiss'),
+            tabMissing: document.getElementById('tabMissing'),
+            tabPresent: document.getElementById('tabPresent'),
+            listMissing: document.getElementById('listMissing'),
+            listPresent: document.getElementById('listPresent'),
         };
 
         // ==========================================
@@ -449,7 +532,8 @@
                             resolve({
                                 status: "success",
                                 places: ["อาคารแพทยพัฒน์ (Mock)", "ลานเกียร์ (Mock)"],
-                                times: ["รอบเย็น (Mock)", "รอบดึก (Mock)"]
+                                times: ["รอบเย็น (Mock)", "รอบดึก (Mock)"],
+                                baans: ["บ้าน 01", "บ้าน 02"]
                             });
                         } else if (action === "verifyUser") {
                             if (data.id === "00000") {
@@ -462,6 +546,13 @@
                             }
                         } else if (action === "processCheckIn") {
                             resolve({ status: "success", data: { firstName: "สมชาย", lastName: "ใจดี", nickname: "เอ", baan: "สราญ" } });
+                        } else if (action === "getDashboardData") {
+                            resolve({ 
+                                status: "success", 
+                                summary: { total: 10, checkedIn: 2, missing: 8 }, 
+                                checkedInList: [{ id: "12345", name: "สมชาย ใจดี", time: "18:00", place: "อาคารแพทยพัฒน์" }], 
+                                missingList: [{ id: "12346", name: "สมหญิง ใจดี" }] 
+                            });
                         }
                     }, 500);
                 });
@@ -517,8 +608,14 @@
                         this.stream.getTracks().forEach(track => track.stop());
                     }
 
+                    // ปรับแต่ง: จำกัดความละเอียด และสั่งให้เลนส์มือถือ Auto-Focus แบบต่อเนื่อง (ช่วยให้โฟกัสไวขึ้น)
                     this.stream = await navigator.mediaDevices.getUserMedia({
-                        video: { facingMode: this.currentFacingMode, width: { ideal: 720 }, height: { ideal: 720 } }
+                        video: { 
+                            facingMode: this.currentFacingMode, 
+                            width: { ideal: 720 }, 
+                            height: { ideal: 720 },
+                            advanced: [{ focusMode: "continuous" }]
+                        }
                     });
 
                     this.video.srcObject = this.stream;
@@ -606,11 +703,22 @@
             tick: function () {
                 if (this.video.readyState === this.video.HAVE_ENOUGH_DATA && this.isScanning) {
                     const ctx = this.canvas.getContext('2d', { willReadFrequently: true });
-                    this.canvas.height = this.video.videoHeight;
-                    this.canvas.width = this.video.videoWidth;
-                    ctx.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height);
+                    
+                    // ปรับแต่ง: สร้างกรอบ Crop ภาพ เอาเฉพาะตรงกลาง (70% ของหน้าจอ) ย่อให้เหลือ 300x300px
+                    // จะทำให้ jsQR ไม่ต้องสแกนหาพื้นหลังขยะ และทำงานได้เร็วขึ้นแบบก้าวกระโดด
+                    const vW = this.video.videoWidth;
+                    const vH = this.video.videoHeight;
+                    const cropSize = Math.min(vW, vH) * 0.7; // กรอบภาพมีขนาด 70% 
+                    const startX = (vW - cropSize) / 2;
+                    const startY = (vH - cropSize) / 2;
 
-                    const imageData = ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+                    this.canvas.width = 300;
+                    this.canvas.height = 300;
+                    
+                    // วาดภาพเฉพาะส่วนกรอบตรงกลาง และบีบอัดลง Canvas ขนาด 300px
+                    ctx.drawImage(this.video, startX, startY, cropSize, cropSize, 0, 0, 300, 300);
+
+                    const imageData = ctx.getImageData(0, 0, 300, 300);
                     const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: "dontInvert" });
 
                     if (code && code.data && !APP.isProcessing) {
@@ -670,34 +778,39 @@
                 if (this.currentMode === mode) return;
                 this.currentMode = mode;
 
-                const activeTabClass = "flex-1 py-2.5 text-sm font-semibold rounded-lg bg-white text-gray-900 shadow-sm transition-all duration-200";
-                const inactiveTabClass = "flex-1 py-2.5 text-sm font-semibold rounded-lg text-gray-500 hover:text-gray-900 transition-all duration-200";
+                const activeTabClass = "flex-1 py-2 text-sm font-semibold rounded-lg bg-white text-gray-900 shadow-sm transition-all duration-200";
+                const inactiveTabClass = "flex-1 py-2 text-sm font-semibold rounded-lg text-gray-500 hover:text-gray-900 transition-all duration-200";
 
-                if (mode === 'scan') {
-                    DOM.scanWrapper.classList.remove('hidden');
-                    DOM.manualWrapper.classList.add('hidden');
-                    DOM.modeScanBtn.className = activeTabClass;
-                    DOM.modeManualBtn.className = inactiveTabClass;
-                    SCANNER.resume();
-                } else {
-                    DOM.scanWrapper.classList.add('hidden');
-                    DOM.manualWrapper.classList.remove('hidden');
-                    DOM.modeManualBtn.className = activeTabClass;
-                    DOM.modeScanBtn.className = inactiveTabClass;
-                    SCANNER.stop();
-                    DOM.manualIdInput.focus();
-                }
+                DOM.modeScanBtn.className = mode === 'scan' ? activeTabClass : inactiveTabClass;
+                DOM.modeManualBtn.className = mode === 'manual' ? activeTabClass : inactiveTabClass;
+                DOM.modeDashBtn.className = mode === 'dashboard' ? activeTabClass : inactiveTabClass;
+
+                DOM.scanWrapper.classList.toggle('hidden', mode !== 'scan');
+                DOM.manualWrapper.classList.toggle('hidden', mode !== 'manual');
+                DOM.dashWrapper.classList.toggle('hidden', mode !== 'dashboard');
+
+                if (mode === 'scan') SCANNER.resume();
+                else SCANNER.stop();
+
+                if (mode === 'manual') DOM.manualIdInput.focus();
             },
 
             fetchConfigs: async function () {
                 DOM.placeSelect.innerHTML = '<option value="">กำลังโหลด...</option>';
                 DOM.roundSelect.innerHTML = '<option value="">กำลังโหลด...</option>';
+                DOM.dashBaanSelect.innerHTML = '<option value="" disabled selected hidden>กรุณาเลือกบ้าน</option>';
+                DOM.dashRoundSelect.innerHTML = '<option value="" disabled selected hidden>กรุณาเลือกรอบ</option>';
 
                 try {
                     const data = await fetchAPI("getConfigs");
                     if (data.status === "success") {
                         DOM.placeSelect.innerHTML = data.places.map(p => `<option value="${p}">${p}</option>`).join('');
                         DOM.roundSelect.innerHTML = data.times.map(t => `<option value="${t}">${t}</option>`).join('');
+                        DOM.dashRoundSelect.innerHTML = '<option value="" disabled selected hidden>กรุณาเลือกรอบ</option>' + data.times.map(t => `<option value="${t}">${t}</option>`).join('');
+                        
+                        if (data.baans) {
+                            DOM.dashBaanSelect.innerHTML = '<option value="" disabled selected hidden>กรุณาเลือกบ้าน</option>' + data.baans.map(b => `<option value="${b}">${b}</option>`).join('');
+                        }
                     } else {
                         DOM.placeSelect.innerHTML = `<option value="">โหลดผิดพลาด</option>`;
                         DOM.roundSelect.innerHTML = `<option value="">โหลดผิดพลาด</option>`;
@@ -768,6 +881,67 @@
                     }
                 } catch (err) {
                     this.openModal("error", "ขัดข้อง", err.message || "ไม่สามารถบันทึกข้อมูลได้");
+                }
+            },
+
+            // --- ส่วนของ Dashboard ฟังก์ชัน ---
+            toggleDashTab: function (tab) {
+                const activeCls = "flex-1 text-xs font-bold py-2 rounded-lg shadow-sm transition-all bg-white ";
+                const inactiveCls = "flex-1 text-xs font-bold py-2 rounded-lg transition-all text-gray-500 hover:text-gray-700";
+
+                if (tab === 'missing') {
+                    DOM.tabMissing.className = activeCls + "text-red-600";
+                    DOM.tabPresent.className = inactiveCls;
+                    DOM.listMissing.classList.remove('hidden');
+                    DOM.listPresent.classList.add('hidden');
+                } else {
+                    DOM.tabPresent.className = activeCls + "text-green-600";
+                    DOM.tabMissing.className = inactiveCls;
+                    DOM.listPresent.classList.remove('hidden');
+                    DOM.listMissing.classList.add('hidden');
+                }
+            },
+
+            loadDashboard: async function () {
+                const baan = DOM.dashBaanSelect.value;
+                const round = DOM.dashRoundSelect.value;
+                if (!baan || !round) return alert("กรุณาเลือกรอบเวลาและเลือกบ้าน ให้ครบถ้วนก่อนกดค้นหา");
+
+                DOM.statTotal.innerText = "..."; DOM.statIn.innerText = "..."; DOM.statMiss.innerText = "...";
+                DOM.listMissing.innerHTML = `<div class="text-center text-sm text-gray-400 py-8">กำลังโหลดข้อมูล...</div>`;
+                DOM.listPresent.innerHTML = `<div class="text-center text-sm text-gray-400 py-8">กำลังโหลดข้อมูล...</div>`;
+
+                try {
+                    const res = await fetchAPI("getDashboardData", { baan: baan, round: round });
+                    if (res.status === "success") {
+                        DOM.statTotal.innerText = res.summary.total;
+                        DOM.statIn.innerText = res.summary.checkedIn;
+                        DOM.statMiss.innerText = res.summary.missing;
+
+                        // Render Missing
+                        DOM.listMissing.innerHTML = res.missingList.length === 0
+                            ? `<div class="text-center text-sm text-green-600 py-8 font-bold">มาครบทุกคนแล้ว</div>`
+                            : res.missingList.map(u => `
+                                <div class="bg-white p-3 rounded-xl border border-red-100 flex justify-between items-center shadow-sm">
+                                    <div><div class="text-xs font-mono text-gray-500">${u.id}</div><div class="text-sm font-bold text-gray-900">${u.name}</div></div>
+                                    <div class="w-2.5 h-2.5 bg-red-500 rounded-full"></div>
+                                </div>
+                            `).join('');
+
+                        // Render Present
+                        DOM.listPresent.innerHTML = res.checkedInList.length === 0
+                            ? `<div class="text-center text-sm text-gray-400 py-8">ยังไม่มีผู้เช็คอิน</div>`
+                            : res.checkedInList.map(u => `
+                                <div class="bg-white p-3 rounded-xl border border-green-100 flex justify-between items-center shadow-sm">
+                                    <div><div class="text-xs font-mono text-gray-500">${u.id}</div><div class="text-sm font-bold text-gray-900">${u.name}</div></div>
+                                    <div class="text-right"><div class="text-xs font-bold text-green-600">${u.time} น.</div><div class="text-[10px] text-gray-500 truncate max-w-[80px]">${u.place}</div></div>
+                                </div>
+                            `).join('');
+                    } else {
+                        alert(res.message);
+                    }
+                } catch (e) {
+                    alert("เกิดข้อผิดพลาดในการเชื่อมต่อเพื่อดึงข้อมูลสรุปยอด");
                 }
             },
 
