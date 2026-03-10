@@ -86,7 +86,7 @@
             position: absolute;
             width: 2rem;
             height: 2rem;
-            border-color: #ffffff;
+            border-color: #10b981;
             border-style: solid;
         }
 
@@ -130,11 +130,11 @@
                 <button onclick="APP.fetchConfigs(true)"
                     class="p-2.5 bg-white rounded-full shadow-sm border border-gray-100 text-gray-600 hover:bg-gray-50 active:scale-95 transition-all"
                     title="รีเฟรชข้อมูล">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" 
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-refresh-ccw-icon lucide-refresh-ccw">
-                    <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-                    <path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
-                    <path d="M16 16h5v5"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                        <path d="M3 3v5h5" />
+                    </svg>
                 </button>
             </div>
         </header>
@@ -187,7 +187,7 @@
 
                     <div id="camera-controls" class="absolute top-3 right-3 flex flex-col gap-2 z-20 hidden fade-in">
                         <button onclick="SCANNER.switchCamera()" class="p-2.5 bg-black/40 text-white rounded-full backdrop-blur-md border border-white/20 hover:bg-black/60 active:scale-95 transition-all shadow-lg">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-switch-camera-icon lucide-switch-camera"><path d="M11 19H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h5"/><path d="M13 5h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-5"/><circle cx="12" cy="12" r="3"/><path d="m18 22-3-3 3-3"/><path d="m6 2 3 3-3 3"/></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9v-1a2 2 0 0 0-2-2H6.5" /><path d="m9 2-4 4 4 4" /><path d="M4 15v1a2 2 0 0 0 2 2h11.5" /><path d="m15 22 4-4-4-4" /></svg>
                         </button>
                         <button id="btnFlash" onclick="SCANNER.toggleFlash()" class="p-2.5 bg-black/40 text-white rounded-full backdrop-blur-md border border-white/20 hover:bg-black/60 active:scale-95 transition-all shadow-lg hidden">
                             <svg id="iconFlash" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h2.5v7l9-10.5H13L15 2z" /></svg>
@@ -342,7 +342,7 @@
         // ==========================================
         // URL จาก Google Apps Script
         // ==========================================
-        const GOOGLE_APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxsaTrGRyMYSfUKKA0Xp1N439kzyLFBFo0N5NYMh9VtYs0yahLOzc5xKypMbzT7iYHB/exec";
+        const GOOGLE_APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwuRmQ4di9yl2YuDEsvXsfx-gCJRAPLPitQnpJ7029iaTUWTBpnl5x5ZsBV2r7il-0I/exec";
 
         const DOM = {
             roundSelect: document.getElementById('roundSelect'),
@@ -699,7 +699,6 @@
                 }
             },
 
-            // --- อัปเกรด: การเขียนแบบ Non-blocking (รอเขียนเสร็จจริงค่อยแจ้งเตือน แต่หน้าจอเปิดสแกนต่อได้เลย) ---
             confirmCheckIn: function () {
                 const id = this.pendingId;
                 const round = DOM.roundSelect.value;
@@ -741,7 +740,6 @@
                     });
             },
 
-            // ระบบทยอยส่งข้อมูลที่ค้างอยู่เบื้องหลัง (กรณีเคยออฟไลน์)
             processSyncQueue: async function() {
                 if(this.isSyncing) return;
                 
@@ -778,7 +776,6 @@
                 }
             },
 
-            // แสดง Toast Notification แบบสามารถเปลี่ยนสีได้ตามสถานะ
             showToast: function(message, bgClass = "bg-emerald-500") {
                 DOM.toastMsg.innerText = message || "สำเร็จ!";
                 
@@ -839,12 +836,22 @@
 
                         DOM.listPresent.innerHTML = res.checkedInList.length === 0
                             ? `<div class="text-center text-sm text-gray-400 py-8">ยังไม่มีผู้เช็คอิน</div>`
-                            : res.checkedInList.map(u => `
+                            : res.checkedInList.map(u => {
+                                // แปลง Object ให้กลายเป็น String เผื่อกรณีที่ข้อมูลเวลาเป็น Object
+                                let timeDisplay = u.time;
+                                if (typeof u.time === 'object' && u.time !== null) {
+                                    timeDisplay = JSON.stringify(u.time);
+                                } else if (u.time === undefined || u.time === null) {
+                                    timeDisplay = '-';
+                                }
+
+                                return `
                                 <div class="bg-white p-3 rounded-xl border border-green-100 flex justify-between items-center shadow-sm">
                                     <div><div class="text-xs font-mono text-gray-500">${u.id}</div><div class="text-sm font-bold text-gray-900">${u.name}</div></div>
-                                    <div class="text-right"><div class="text-xs font-bold text-green-600">${u.time} น.</div><div class="text-[10px] text-gray-500 truncate max-w-[80px]">${u.place}</div></div>
+                                    <div class="text-right"><div class="text-xs font-bold text-green-600">${timeDisplay} น.</div><div class="text-[10px] text-gray-500 truncate max-w-[80px]">${u.place}</div></div>
                                 </div>
-                            `).join('');
+                                `
+                            }).join('');
                     } else {
                         alert(res.message);
                     }
