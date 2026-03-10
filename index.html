@@ -184,7 +184,7 @@
         <header class="w-full flex justify-between items-center py-2 px-2">
             <div>
                 <h1 class="text-2xl font-bold tracking-tight text-gray-900">ระบบเช็คชื่อน้อง</h1>
-                <p class="text-sm font-medium text-gray-500">MDCU Freshy System</p>
+                <p class="text-sm font-medium text-gray-500">MDCU Freshy Camp Check-In</p>
             </div>
             <div class="flex gap-2">
                 <button onclick="APP.fetchConfigs()"
@@ -1023,7 +1023,7 @@
                     const gain = audioCtx.createGain();
                     osc.connect(gain); gain.connect(audioCtx.destination);
                     osc.frequency.value = 880;
-                    gain.gain.value = 0.1;
+                    gain.gain.value = 0.3;
                     osc.start();
                     osc.stop(audioCtx.currentTime + 0.15);
                 } catch (e) { console.log("Audio not supported"); }
