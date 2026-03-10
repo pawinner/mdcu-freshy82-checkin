@@ -86,7 +86,7 @@
             position: absolute;
             width: 2rem;
             height: 2rem;
-            border-color: #10b981;
+            border-color: #ffffff;
             border-style: solid;
         }
 
@@ -130,11 +130,11 @@
                 <button onclick="APP.fetchConfigs(true)"
                     class="p-2.5 bg-white rounded-full shadow-sm border border-gray-100 text-gray-600 hover:bg-gray-50 active:scale-95 transition-all"
                     title="รีเฟรชข้อมูล">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-                        <path d="M3 3v5h5" />
-                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" 
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-refresh-ccw-icon lucide-refresh-ccw">
+                    <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                    <path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
+                    <path d="M16 16h5v5"/></svg>
                 </button>
             </div>
         </header>
@@ -187,7 +187,7 @@
 
                     <div id="camera-controls" class="absolute top-3 right-3 flex flex-col gap-2 z-20 hidden fade-in">
                         <button onclick="SCANNER.switchCamera()" class="p-2.5 bg-black/40 text-white rounded-full backdrop-blur-md border border-white/20 hover:bg-black/60 active:scale-95 transition-all shadow-lg">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9v-1a2 2 0 0 0-2-2H6.5" /><path d="m9 2-4 4 4 4" /><path d="M4 15v1a2 2 0 0 0 2 2h11.5" /><path d="m15 22 4-4-4-4" /></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-switch-camera-icon lucide-switch-camera"><path d="M11 19H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h5"/><path d="M13 5h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-5"/><circle cx="12" cy="12" r="3"/><path d="m18 22-3-3 3-3"/><path d="m6 2 3 3-3 3"/></svg>
                         </button>
                         <button id="btnFlash" onclick="SCANNER.toggleFlash()" class="p-2.5 bg-black/40 text-white rounded-full backdrop-blur-md border border-white/20 hover:bg-black/60 active:scale-95 transition-all shadow-lg hidden">
                             <svg id="iconFlash" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h2.5v7l9-10.5H13L15 2z" /></svg>
@@ -277,14 +277,14 @@
         </div>
     </div>
 
-    <!-- Success Toast Notification (Minimalist) -->
-    <div id="toastNoti" class="fixed top-5 right-5 z-[100] flex items-center gap-3 rounded-2xl bg-emerald-500 px-5 py-3.5 text-white shadow-2xl transition-all duration-300 translate-x-[150%] opacity-0 pointer-events-none">
+    <!-- Success Toast Notification (Minimalist) เปลี่ยนให้รองรับหลายสี -->
+    <div id="toastNoti" class="fixed top-5 right-5 z-[100] flex items-center gap-3 rounded-2xl px-5 py-3.5 text-white shadow-2xl transition-all duration-300 translate-x-[150%] opacity-0 pointer-events-none">
         <div class="bg-white/20 rounded-full p-1">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
             </svg>
         </div>
-        <span id="toastMsg" class="font-bold text-sm tracking-wide">เช็คอินสำเร็จ!</span>
+        <span id="toastMsg" class="font-bold text-sm tracking-wide">...</span>
     </div>
 
     <!-- Confirm / Error Modal System -->
@@ -413,29 +413,12 @@
             currentFacingMode: 'environment',
             isTorchOn: false,
             videoTrack: null,
-            
-            lastScanTime: 0,
-            scanInterval: 300, 
-            barcodeDetector: null,
-
-            initDetector: function() {
-                if ('BarcodeDetector' in window) {
-                    try {
-                        this.barcodeDetector = new BarcodeDetector({ formats: ['qr_code'] });
-                        console.log("🚀 Using Hardware Accelerated BarcodeDetector");
-                    } catch (e) {
-                        console.log("Fallback to jsQR");
-                    }
-                }
-            },
 
             start: async function () {
                 if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
                     APP.showError("เบราว์เซอร์ไม่รองรับ", "กรุณาใช้ Chrome หรือ Safari เวอร์ชั่นล่าสุด");
                     return;
                 }
-
-                this.initDetector();
 
                 try {
                     if (this.stream) {
@@ -520,48 +503,31 @@
                 }
             },
 
-            tick: async function () {
+            tick: function () {
                 if (this.video.readyState === this.video.HAVE_ENOUGH_DATA && this.isScanning) {
-                    const now = Date.now();
-                    if (now - this.lastScanTime >= this.scanInterval && !APP.isProcessing) {
-                        this.lastScanTime = now;
-                        try {
-                            if (this.barcodeDetector) {
-                                const barcodes = await this.barcodeDetector.detect(this.video);
-                                if (barcodes.length > 0) {
-                                    this.onDetect(barcodes[0].rawValue);
-                                    return;
-                                }
-                            } else {
-                                const ctx = this.canvas.getContext('2d', { willReadFrequently: true });
-                                const vW = this.video.videoWidth;
-                                const vH = this.video.videoHeight;
-                                const cropSize = Math.min(vW, vH) * 0.7; 
-                                const startX = (vW - cropSize) / 2;
-                                const startY = (vH - cropSize) / 2;
+                    const ctx = this.canvas.getContext('2d', { willReadFrequently: true });
+                    const vW = this.video.videoWidth;
+                    const vH = this.video.videoHeight;
+                    const cropSize = Math.min(vW, vH) * 0.7; 
+                    const startX = (vW - cropSize) / 2;
+                    const startY = (vH - cropSize) / 2;
 
-                                this.canvas.width = 250;
-                                this.canvas.height = 250;
-                                
-                                ctx.drawImage(this.video, startX, startY, cropSize, cropSize, 0, 0, 250, 250);
-                                const imageData = ctx.getImageData(0, 0, 250, 250);
-                                const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: "dontInvert" });
+                    this.canvas.width = 300;
+                    this.canvas.height = 300;
+                    
+                    ctx.drawImage(this.video, startX, startY, cropSize, cropSize, 0, 0, 300, 300);
+                    const imageData = ctx.getImageData(0, 0, 300, 300);
+                    const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: "dontInvert" });
 
-                                if (code && code.data) {
-                                    this.onDetect(code.data);
-                                    return;
-                                }
-                            }
-                        } catch (err) {}
+                    if (code && code.data && !APP.isProcessing) {
+                        this.pause();
+                        if (navigator.vibrate) navigator.vibrate(200); 
+                        APP.verifyUser(code.data);
+                        return; // เจอโค้ดแล้ว หยุดทำลูปชั่วคราว
                     }
                 }
+                
                 if (this.isScanning) requestAnimationFrame(() => this.tick());
-            },
-
-            onDetect: function(dataStr) {
-                this.pause();
-                if (navigator.vibrate) navigator.vibrate(200); 
-                APP.verifyUser(dataStr);
             },
 
             stop: function () {
@@ -613,7 +579,7 @@
 
             init: function () {
                 this.fetchConfigs(false);
-                // พยายามดึงคิวที่ค้างไว้ส่งขึ้น Server ทุกๆ 10 วินาที
+                // พยายามดึงคิวที่ค้างไว้ส่งขึ้น Server ทุกๆ 10 วินาที (เผื่อเน็ตหลุด)
                 setInterval(() => this.processSyncQueue(), 10000);
             },
 
@@ -639,19 +605,28 @@
             },
 
             renderConfigs: function(data) {
+                // จำค่าปัจจุบันที่เลือกไว้ก่อน
+                const currentPlace = DOM.placeSelect.value;
+                const currentRound = DOM.roundSelect.value;
+                const currentDashRound = DOM.dashRoundSelect.value;
+                const currentDashBaan = DOM.dashBaanSelect.value;
+
                 DOM.placeSelect.innerHTML = data.places.map(p => `<option value="${p}">${p}</option>`).join('');
                 DOM.roundSelect.innerHTML = data.times.map(t => `<option value="${t}">${t}</option>`).join('');
                 DOM.dashRoundSelect.innerHTML = '<option value="" disabled selected hidden>กรุณาเลือกรอบ</option>' + data.times.map(t => `<option value="${t}">${t}</option>`).join('');
                 if (data.baans) {
                     DOM.dashBaanSelect.innerHTML = '<option value="" disabled selected hidden>กรุณาเลือกบ้าน</option>' + data.baans.map(b => `<option value="${b}">${b}</option>`).join('');
                 }
+
+                // เซ็ตค่ากลับไปเป็นค่าเดิมที่เคยเลือกไว้ (ถ้ามี)
+                if (currentPlace) DOM.placeSelect.value = currentPlace;
+                if (currentRound) DOM.roundSelect.value = currentRound;
+                if (currentDashRound) DOM.dashRoundSelect.value = currentDashRound;
+                if (currentDashBaan) DOM.dashBaanSelect.value = currentDashBaan;
             },
 
             fetchConfigs: async function (forceRefresh = false) {
-                if(forceRefresh) {
-                    DOM.placeSelect.innerHTML = '<option value="">กำลังรีเฟรช...</option>';
-                    DOM.roundSelect.innerHTML = '<option value="">กำลังรีเฟรช...</option>';
-                } else {
+                if(!forceRefresh) {
                     const cachedData = localStorage.getItem('mdcu_app_configs');
                     if (cachedData) {
                         try { this.renderConfigs(JSON.parse(cachedData)); } catch(e){}
@@ -663,7 +638,6 @@
                     if (data.status === "success") {
                         localStorage.setItem('mdcu_app_configs', JSON.stringify(data));
                         
-                        // ฟีเจอร์เพิ่มเติม (ทำให้ Read เร็ว): ถ้า GAS ถูกอัปเดตให้ส่งรายชื่อ `users` มาด้วย จะจำไว้ในเครื่อง
                         if(data.users) {
                             localStorage.setItem('mdcu_users_cache', JSON.stringify(data.users));
                         }
@@ -693,17 +667,16 @@
                 this.isProcessing = true;
                 this.pendingId = id;
 
-                // --- อัปเกรด: อ่านข้อมูลแบบ 0 วินาที จาก Local Cache (ถ้ามี) ---
+                // อ่านข้อมูลแบบ 0 วินาที จาก Local Cache (ถ้ามี)
                 try {
                     const cachedUsers = JSON.parse(localStorage.getItem('mdcu_users_cache'));
                     if (cachedUsers && cachedUsers[id]) {
-                        // เจอใน Cache! เปิดหน้าต่างยืนยันทันที ไม่ต้องรอเน็ต
                         this.openModal("confirm", "ตรวจสอบข้อมูล", "ยืนยันการทำรายการหรือไม่?", cachedUsers[id]);
                         return;
                     }
                 } catch(e) {}
 
-                // --- ถ้าไม่เจอใน Cache ให้โหลดผ่านเน็ตตามปกติ ---
+                // ถ้าไม่เจอใน Cache ให้โหลดผ่านเน็ตตามปกติ
                 this.openModal("loading", "กำลังค้นหาข้อมูล", `ID: ${id}`);
                 try {
                     const res = await fetchAPI("verifyUser", { id: id });
@@ -726,7 +699,7 @@
                 }
             },
 
-            // --- อัปเกรด: การเขียน (Write) แบบ 0 วินาที (Optimistic UI & Background Sync) ---
+            // --- อัปเกรด: การเขียนแบบ Non-blocking (รอเขียนเสร็จจริงค่อยแจ้งเตือน แต่หน้าจอเปิดสแกนต่อได้เลย) ---
             confirmCheckIn: function () {
                 const id = this.pendingId;
                 const round = DOM.roundSelect.value;
@@ -737,30 +710,38 @@
                     return;
                 }
 
-                // 1. ตอบสนองผู้ใช้ทันที (ไม่ต้องรอเซิร์ฟเวอร์ตอบกลับ)
+                // 1. ปิดหน้าต่างทันที เพื่อให้หน้าจอกลับมาพร้อมแสกนคนต่อไปได้เลย (Non-blocking)
                 this.closeModal();
-                this.showToast("เช็คอินสำเร็จ!"); 
-                this.playBeep();
                 DOM.manualIdInput.value = '';
 
-                // 2. เก็บเข้าคิวออฟไลน์ไว้ก่อน (เผื่อเน็ตหลุด)
-                const queueData = {
-                    reqId: Date.now() + "_" + Math.random().toString(36).substr(2, 9),
-                    id: id, 
-                    round: round, 
-                    place: place,
-                    timestamp: new Date().toISOString()
-                };
-                
-                let queue = JSON.parse(localStorage.getItem('mdcu_checkin_queue') || '[]');
-                queue.push(queueData);
-                localStorage.setItem('mdcu_checkin_queue', JSON.stringify(queue));
-
-                // 3. เรียกฟังก์ชัน Background Sync ให้แอบส่งข้อมูลเงียบๆ
-                this.processSyncQueue();
+                // 2. เรียก API ไปหาเซิร์ฟเวอร์แบบ Asynchronous 
+                fetchAPI("processCheckIn", { id: id, round: round, place: place })
+                    .then(res => {
+                        // 3. เมื่อได้ผลลัพธ์กลับมาจริงๆ ค่อยเด้ง Toast แจ้งเตือนการเขียนสำเร็จ
+                        if (res.status === 'success' || (res.message && res.message.includes('แล้ว'))) {
+                            this.showToast(`เช็คอินสำเร็จ: ${id}`, "bg-emerald-500"); 
+                            this.playBeep();
+                        } else {
+                            this.showToast(`ผิดพลาด (${id}): ${res.message}`, "bg-red-500");
+                        }
+                    })
+                    .catch(err => {
+                        // 4. กรณีเน็ตหลุดระหว่างทาง ค่อยดึงข้อมูลลงคิวออฟไลน์เพื่อส่งทีหลัง
+                        this.showToast(`ออฟไลน์: บันทึก ${id} ลงเครื่อง`, "bg-yellow-500");
+                        
+                        const queueData = {
+                            reqId: Date.now() + "_" + Math.random().toString(36).substr(2, 9),
+                            id: id, round: round, place: place, timestamp: new Date().toISOString()
+                        };
+                        let queue = JSON.parse(localStorage.getItem('mdcu_checkin_queue') || '[]');
+                        queue.push(queueData);
+                        localStorage.setItem('mdcu_checkin_queue', JSON.stringify(queue));
+                        
+                        this.processSyncQueue();
+                    });
             },
 
-            // --- ระบบทยอยส่งข้อมูลที่ค้างอยู่เบื้องหลัง ---
+            // ระบบทยอยส่งข้อมูลที่ค้างอยู่เบื้องหลัง (กรณีเคยออฟไลน์)
             processSyncQueue: async function() {
                 if(this.isSyncing) return;
                 
@@ -771,7 +752,7 @@
                 }
 
                 this.isSyncing = true;
-                DOM.syncBadge.classList.remove('hidden'); // แสดงไฟกระพริบกำลังโหลดเบื้องหลัง
+                DOM.syncBadge.classList.remove('hidden');
 
                 let remainingQueue = [...queue];
 
@@ -779,14 +760,15 @@
                     let task = queue[i];
                     try {
                         const res = await fetchAPI("processCheckIn", { id: task.id, round: task.round, place: task.place });
-                        // ถ้าบันทึกสำเร็จ หรือมี Error เชิง Logcial (เช่น เช็คอินซ้ำ) ก็ให้เอาออกจากคิวได้เลย
                         if (res.status === 'success' || (res.message && res.message.includes('แล้ว'))) {
                             remainingQueue = remainingQueue.filter(q => q.reqId !== task.reqId);
                             localStorage.setItem('mdcu_checkin_queue', JSON.stringify(remainingQueue));
+                            
+                            // แจ้งเตือนเมื่อส่งข้อมูลที่ค้างอยู่สำเร็จ
+                            this.showToast(`ซิงค์ ${task.id} สำเร็จ!`, "bg-emerald-500");
                         }
                     } catch (err) {
-                        console.log("Offline sync failed for", task.id, "Will retry later.");
-                        break; // ขัดข้องทางเครือข่าย หยุดส่งก่อน ไว้รอบหน้าค่อยส่งใหม่
+                        break; // ขัดข้องทางเครือข่าย หยุดส่งก่อน
                     }
                 }
 
@@ -796,15 +778,21 @@
                 }
             },
 
-            // แสดง Toast Notification แบบรวดเร็ว
-            showToast: function(message) {
+            // แสดง Toast Notification แบบสามารถเปลี่ยนสีได้ตามสถานะ
+            showToast: function(message, bgClass = "bg-emerald-500") {
                 DOM.toastMsg.innerText = message || "สำเร็จ!";
+                
+                // รีเซ็ต Class ทั้งหมดและใส่สีที่ต้องการ
+                DOM.toastNoti.className = `fixed top-5 right-5 z-[100] flex items-center gap-3 rounded-2xl px-5 py-3.5 text-white shadow-2xl transition-all duration-300 translate-x-[150%] opacity-0 pointer-events-none ${bgClass}`;
+                
+                // บังคับให้เบราว์เซอร์รับรู้การเปลี่ยน Class (Reflow) ก่อนลบคำสั่งซ่อน
+                void DOM.toastNoti.offsetWidth;
                 DOM.toastNoti.classList.remove('translate-x-[150%]', 'opacity-0');
                 
                 if (this.toastTimeout) clearTimeout(this.toastTimeout);
                 this.toastTimeout = setTimeout(() => {
                     DOM.toastNoti.classList.add('translate-x-[150%]', 'opacity-0');
-                }, 1500); // หายไปใน 1.5 วินาที
+                }, 2500); // ให้อยู่นานขึ้นนิดนึง (2.5 วิ) เพื่อให้อ่านรหัสทัน
             },
 
             toggleDashTab: function (tab) {
