@@ -887,6 +887,7 @@
                 if (state === "loading") {
                     // Just text
                 } else if (state === "confirm") {
+                    this.lastUserData = data || null;
                     DOM.modalUserData.classList.remove('hidden');
                     DOM.modalUserId.innerText = this.pendingId;
                     DOM.modalUserName.innerText = `${data.firstName || ''} ${data.lastName || ''} ${data.nickname ? '(' + data.nickname + ')' : ''}`.trim();
