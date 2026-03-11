@@ -574,6 +574,7 @@
             currentMode: "scan",
             isProcessing: false,
             pendingId: null,
+            lastUserData: null,
             toastTimeout: null,
             isSyncing: false,
 
@@ -718,8 +719,10 @@
                     .then(res => {
                         // 3. เมื่อได้ผลลัพธ์กลับมาจริงๆ ค่อยเด้ง Toast แจ้งเตือนการเขียนสำเร็จ
                         if (res.status === 'success' || (res.message && res.message.includes('แล้ว'))) {
-                            this.showToast(`เช็คอินสำเร็จ: ${id}`, "bg-emerald-500"); 
-                            this.playBeep();
+                            const nickname = this.lastUserData?.nickname ? String(this.lastUserData.nickname).trim() : '';
+                            const label = nickname ? `น้อง${nickname} (${id})` : id;
+                            this.showToast(`เช็คอินสำเร็จ: ${label}`, "bg-emerald-500"); 
+                            this.playBeep(); 
                         } else {
                             this.showToast(`ผิดพลาด (${id}): ${res.message}`, "bg-red-500");
                         }
@@ -929,7 +932,7 @@
                     const gain = audioCtx.createGain();
                     osc.connect(gain); gain.connect(audioCtx.destination);
                     osc.frequency.value = 880;
-                    gain.gain.value = 0.1;
+                    gain.gain.value = 0.3;
                     osc.start();
                     osc.stop(audioCtx.currentTime + 0.15);
                 } catch (e) {}
