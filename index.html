@@ -106,7 +106,7 @@
             position: absolute;
             width: 2rem;
             height: 2rem;
-            border-color: #10b981;
+            border-color: #ffffff;
             border-style: solid;
         }
 
@@ -139,8 +139,19 @@
         <!-- Header Section -->
         <header class="w-full flex justify-between items-center py-2 px-2">
             <div>
-                <h1 class="text-2xl font-bold tracking-tight text-gray-900">ระบบเช็คชื่อน้อง</h1>
+                <div class="flex items-center gap-2">
+                    <h1 class="text-2xl font-bold tracking-tight text-gray-900">ระบบเช็คชื่อน้อง</h1>
+                    <!-- จุดไฟกระพริบเมื่อกำลัง Sync เบื้องหลัง -->
+                    <div id="syncBadge" class="hidden w-2.5 h-2.5 bg-yellow-400 rounded-full animate-pulse" title="กำลังส่งข้อมูลพื้นหลัง..."></div>
+                </div>
                 <p class="text-sm font-medium text-gray-500">MDCU Freshy Camp Check-In</p>
+                <div id="configLastUpdated" class="text-xs font-medium text-gray-400 mt-0.5 flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <span id="configLastUpdatedText">อัปเดตล่าสุดเมื่อ -</span>
+                </div>
             </div>
             <div class="flex gap-2">
                 <button onclick="APP.fetchConfigs(true)"
@@ -156,12 +167,19 @@
         </header>
 
         <!-- Settings Card -->
-        <div class="glass-card w-full p-5">
+        <div class="glass-card w-full p-5 border-1 border-gray-200 shadow-md">
+            <div class="flex items-center gap-2 mb-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+                <p class="text-xs font-bold text-gray-700 uppercase tracking-wider">การตั้งค่าการเช็คอิน</p>
+            </div>
             <div class="grid grid-cols-2 gap-4">
                 <div class="flex flex-col">
-                    <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5 ml-1">รอบเวลา</label>
+                    <label class="text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5 ml-1">รอบเวลา</label>
                     <div class="relative">
-                        <select id="roundSelect" class="w-full appearance-none bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-sm font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all">
+                        <select id="roundSelect" class="w-full appearance-none bg-white border-2 border-gray-300 rounded-xl px-4 py-3 text-sm font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all shadow-sm">
                             <option value="">กำลังโหลด...</option>
                         </select>
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
@@ -170,9 +188,9 @@
                     </div>
                 </div>
                 <div class="flex flex-col">
-                    <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5 ml-1">จุดตรวจสอบ</label>
+                    <label class="text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5 ml-1">จุดตรวจสอบ</label>
                     <div class="relative">
-                        <select id="placeSelect" class="w-full appearance-none bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-sm font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all">
+                        <select id="placeSelect" class="w-full appearance-none bg-white border-2 border-gray-300 rounded-xl px-4 py-3 text-sm font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all shadow-sm">
                             <option value="">กำลังโหลด...</option>
                         </select>
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
@@ -262,6 +280,13 @@
                         </div>
                     </div>
                     <button onclick="APP.loadDashboard()" class="w-full bg-gray-900 text-white px-5 py-3 rounded-xl text-sm font-bold active:scale-95 transition-all">ค้นหาข้อมูล</button>
+                    <div id="dashLastUpdated" class="text-xs font-medium text-gray-400 px-1 flex items-center justify-center gap-1.5">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        <span id="dashLastUpdatedText">ดึงข้อมูลล่าสุดเมื่อ -</span>
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-3 gap-3 mb-5">
@@ -291,6 +316,31 @@
                 </div>
             </div>
         </div>
+
+        <footer class="w-full px-2 pb-6 border-t border-gray-100 mt-4">
+            <div class="flex flex-col space-y-1">
+                <span class="text-[10px] font-semibold text-gray-500 uppercase tracking-widest">ช่องทางติดต่อฝ่ายทะเบียน</span>
+                <p class="text-sm font-bold text-gray-900">ภาณุวิชญ์ พุกโฉมงาม (พี)</p>
+                <p class="text-xs font-medium text-gray-600">หัวหน้าฝ่ายทะเบียน MDCU Night</p>
+
+                <div class="w-full pt-2">
+                    <div class="flex gap-4 flex-wrap">
+                        <a href="tel:0982480203" class="flex items-center gap-1.5 text-xs text-gray-700 hover:text-black transition-colors">
+                            <span class="inline-flex items-center justify-center w-5 h-5 rounded-md bg-gray-900 text-white">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            </span>
+                            <span>โทรศัพท์ 098-248-0203</span>
+                        </a>
+                        <button type="button" onclick="APP.copyLineId('suankularb_absk')" class="flex items-center gap-1.5 text-xs text-gray-700 hover:text-black transition-colors active:scale-[0.99]">
+                            <span class="inline-flex items-center justify-center w-5 h-5 rounded-md bg-gray-900 text-white">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                            </span>
+                            <span>Line ID: <span class="font-semibold">suankularb_absk</span></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </div>
 
     <!-- Success Toast Notification (Minimalist) เปลี่ยนให้รองรับหลายสี -->
@@ -397,6 +447,7 @@
             statTotal: document.getElementById('statTotal'),
             statIn: document.getElementById('statIn'),
             statMiss: document.getElementById('statMiss'),
+            dashLastUpdatedText: document.getElementById('dashLastUpdatedText'),
             tabMissing: document.getElementById('tabMissing'),
             tabPresent: document.getElementById('tabPresent'),
             listMissing: document.getElementById('listMissing'),
@@ -404,6 +455,7 @@
             toastNoti: document.getElementById('toastNoti'),
             toastMsg: document.getElementById('toastMsg'),
             syncBadge: document.getElementById('syncBadge'),
+            configLastUpdatedText: document.getElementById('configLastUpdatedText'),
         };
 
         async function fetchAPI(action, data = {}) {
@@ -663,6 +715,7 @@
                     const data = await fetchAPI("getConfigs");
                     if (data.status === "success") {
                         localStorage.setItem('mdcu_app_configs', JSON.stringify(data));
+                        DOM.configLastUpdatedText.innerText = `อัปเดตล่าสุดเมื่อ ${new Date().toLocaleTimeString('th-TH')}`;
                         
                         if(data.users) {
                             localStorage.setItem('mdcu_users_cache', JSON.stringify(data.users));
@@ -748,6 +801,9 @@
                             const nickname = this.lastUserData?.nickname ? String(this.lastUserData.nickname).trim() : '';
                             const label = nickname ? `น้อง${nickname} (${id})` : id;
                             this.showToast(`เช็คอินสำเร็จ: ${label}`, "bg-emerald-500");
+                            if (this.currentMode === 'dashboard') {
+                                this.loadDashboard();
+                            }
                         } else {
                             this.showToast(`ผิดพลาด (${id}): ${res.message}`, "bg-red-500");
                         }
@@ -849,6 +905,7 @@
                 try {
                     const res = await fetchAPI("getDashboardData", { baan: baan, round: round });
                     if (res.status === "success") {
+                        DOM.dashLastUpdatedText.innerText = `ดึงข้อมูลล่าสุดเมื่อ ${new Date().toLocaleTimeString('th-TH')}`;
                         DOM.statTotal.innerText = res.summary.total;
                         DOM.statIn.innerText = res.summary.checkedIn;
                         DOM.statMiss.innerText = res.summary.missing;
@@ -856,11 +913,19 @@
                         DOM.listMissing.innerHTML = res.missingList.length === 0
                             ? `<div class="text-center text-sm text-green-600 py-8 font-bold">มาครบทุกคนแล้ว</div>`
                             : res.missingList.map(u => `
-                                <div class="bg-white p-3 rounded-xl border border-red-100 flex justify-between items-center shadow-sm">
+                                <button type="button" class="w-full text-left bg-white p-3 rounded-xl border border-red-100 flex justify-between items-center shadow-sm hover:bg-red-50 active:scale-[0.99] transition-all" data-user-id="${u.id}">
                                     <div><div class="text-xs font-mono text-gray-500">${u.id}</div><div class="text-sm font-bold text-gray-900">${u.name}</div></div>
                                     <div class="w-2.5 h-2.5 bg-red-500 rounded-full"></div>
-                                </div>
+                                </button>
                             `).join('');
+
+                        // กดชื่อจากรายชื่อยังไม่มาเพื่อเปิด modal ยืนยันแบบเดียวกับการสแกน
+                        DOM.listMissing.querySelectorAll('[data-user-id]').forEach((item) => {
+                            item.addEventListener('click', () => {
+                                const userId = item.getAttribute('data-user-id');
+                                if (userId) this.verifyUser(userId);
+                            });
+                        });
 
                         DOM.listPresent.innerHTML = res.checkedInList.length === 0
                             ? `<div class="text-center text-sm text-gray-400 py-8">ยังไม่มีผู้เช็คอิน</div>`
@@ -942,13 +1007,31 @@
                 if (this.currentMode === 'scan') {
                     // กลับมาแสกนต่อรวดเร็ว
                     setTimeout(() => SCANNER.resume(), 300);
-                } else {
+                } else if (this.currentMode === 'manual') {
                     DOM.manualIdInput.focus();
                 }
             },
 
             cancelCheckIn: function () {
                 this.closeModal();
+            },
+
+            copyLineId: async function (lineId) {
+                try {
+                    if (navigator.clipboard && window.isSecureContext) {
+                        await navigator.clipboard.writeText(lineId);
+                    } else {
+                        const tempInput = document.createElement('input');
+                        tempInput.value = lineId;
+                        document.body.appendChild(tempInput);
+                        tempInput.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(tempInput);
+                    }
+                    this.showToast(`คัดลอก Line ID แล้ว: ${lineId}`, "bg-gray-900");
+                } catch (e) {
+                    this.showToast("คัดลอกไม่สำเร็จ", "bg-red-500");
+                }
             },
 
             playBeep: function () {
