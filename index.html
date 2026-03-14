@@ -667,6 +667,7 @@
 
                 this.isProcessing = true;
                 this.pendingId = id;
+                this.playBeep();
 
                 // อ่านข้อมูลแบบ 0 วินาที จาก Local Cache (ถ้ามี)
                 try {
@@ -721,8 +722,7 @@
                         if (res.status === 'success' || (res.message && res.message.includes('แล้ว'))) {
                             const nickname = this.lastUserData?.nickname ? String(this.lastUserData.nickname).trim() : '';
                             const label = nickname ? `น้อง${nickname} (${id})` : id;
-                            this.showToast(`เช็คอินสำเร็จ: ${label}`, "bg-emerald-500"); 
-                            this.playBeep(); 
+                            this.showToast(`เช็คอินสำเร็จ: ${label}`, "bg-emerald-500");
                         } else {
                             this.showToast(`ผิดพลาด (${id}): ${res.message}`, "bg-red-500");
                         }
@@ -928,14 +928,10 @@
 
             playBeep: function () {
                 try {
-                    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-                    osc.connect(gain); gain.connect(audioCtx.destination);
-                    osc.frequency.value = 880;
-                    gain.gain.value = 0.3;
-                    osc.start();
-                    osc.stop(audioCtx.currentTime + 0.15);
+                    const beep = new Audio("assets/sounds/beep.wav");
+                    beep.volume = 0.5;
+                    beep.currentTime = 0;
+                    beep.play().catch(() => {});
                 } catch (e) {}
             }
         };
