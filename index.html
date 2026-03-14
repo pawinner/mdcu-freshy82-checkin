@@ -781,6 +781,9 @@
                             const nickname = this.lastUserData?.nickname ? String(this.lastUserData.nickname).trim() : '';
                             const label = nickname ? `น้อง${nickname} (${id})` : id;
                             this.showToast(`เช็คอินสำเร็จ: ${label}`, "bg-emerald-500");
+                            if (this.currentMode === 'dashboard') {
+                                this.loadDashboard();
+                            }
                         } else {
                             this.showToast(`ผิดพลาด (${id}): ${res.message}`, "bg-red-500");
                         }
