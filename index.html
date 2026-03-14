@@ -577,9 +577,18 @@
             lastUserData: null,
             toastTimeout: null,
             isSyncing: false,
+            beepSound: new Audio("assets/sounds/beep.wav"),
 
             init: function () {
                 this.fetchConfigs(false);
+                this.beepSound.load();
+                // Safari iOS unlock trick for instant beep
+                document.body.addEventListener('click', () => {
+                    this.beepSound.play().then(() => {
+                        this.beepSound.pause();
+                        this.beepSound.currentTime = 0;
+                    }).catch(()=>{});
+                }, { once: true });
                 // พยายามดึงคิวที่ค้างไว้ส่งขึ้น Server ทุกๆ 10 วินาที (เผื่อเน็ตหลุด)
                 setInterval(() => this.processSyncQueue(), 10000);
             },
@@ -928,10 +937,9 @@
 
             playBeep: function () {
                 try {
-                    const beep = new Audio("assets/sounds/beep.wav");
-                    beep.volume = 0.5;
-                    beep.currentTime = 0;
-                    beep.play().catch(() => {});
+                    this.beepSound.currentTime = 0;
+                    this.beepSound.volume = 0.5;
+                    this.beepSound.play().catch(() => {});
                 } catch (e) {}
             }
         };
